@@ -16,6 +16,14 @@ describe Admin::CategoriesController do
     assert_response :redirect, :action => 'index'
   end
 
+  it 'should create a new category' do
+      post :edit, :category => {:name => "Yucheng", :description => "CS student"}
+      assert_response :redirect, :action => "index"
+      expect(assigns(:category)).not_to be_nil
+      expect(flash[:notice]).to eq('Category was successfully saved.')
+    end
+
+
   describe "test_edit" do
     before(:each) do
       get :edit, :id => Factory(:category).id
@@ -62,5 +70,11 @@ describe Admin::CategoriesController do
 
     assert_raise(ActiveRecord::RecordNotFound) { Category.find(test_id) }
   end
+  
+  it 'should render template new' do
+       get :new
+       assert_response :success
+       assert_template 'new'
+     end
   
 end
